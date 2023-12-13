@@ -1,17 +1,13 @@
 import { View, StyleSheet, FlatList } from "react-native";
 import BeatBlock from "./BeatBlock";
 
-const BeatBar = ({ numberOfBeats }) => {
-  let data = [];
-  for (let i = 1; i < numberOfBeats+1; i++){
-    data.push(i);
-  }
+const BeatBar = ({ bar }) => {
   return (
     <View style={styles.wrapper}>
       <FlatList
-        data={data}
+        data={bar.beats}
         renderItem={({item})=>(
-          <BeatBlock style={styles.beat} beatNumber={item}/>
+          <BeatBlock  beat={item}/>
         )}
         horizontal
       />
@@ -24,9 +20,7 @@ const styles = StyleSheet.create({
     height: 200, // Absolute height
     backgroundColor: 'lightgreen',
   },
-  beat:{
-    display:'none'
-  }
+
 });
 
 export default BeatBar;
