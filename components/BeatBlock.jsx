@@ -1,13 +1,32 @@
-import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import React, {useEffect, useState} from "react";
 
 
 
 const BeatBlock = ({ beat }) => {
+  const [isActive, setIsActive] = useState(false);
+  // beat.isActiveFunction = setIsActive;
+  useEffect(() => {
+    if (beat.isActive) {
+      setIsActive(true);
+      const timer = setTimeout(() => {
+        setIsActive(false); // Turn off after numberOfMs
+      }, beat.numberOfMs);
+
+      return () => clearTimeout(timer); // Clear timer on unmount or re-render
+    }
+  }, [beat.isActive, beat.numberOfMs]);
 
   return (
-    <TouchableOpacity onPress={() => { beat.bar.toggle()}}>
-      <View style={beat.isActive ? styles.isActive : styles.isNotActive}>
-        <Text >{beat.beat}</Text>
+    <TouchableOpacity onPress={() => { 
+      setIsActive(!isActive);
+      beat.isActive = !isActive;
+    }}>
+
+      <View style={isActive ? styles.isActive : styles.isNotActive}>
+        <Text >{String(beat.tempo)}</Text>
+        <Text>{String(beat.isActive)}</Text>
+        <Text>{beat.beat}</Text>
       </View>
     </TouchableOpacity>
   )
